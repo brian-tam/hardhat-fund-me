@@ -1,42 +1,36 @@
-# Advanced Sample Hardhat Project
+Mostly will be the same as the course material, but changed a little bit from the FundMe Staging test.
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+I was not able to run the test successfully. 
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+Problem:
+During the test, it said the endingBalance does not equal to 0. And on the etherscan, the withdraw function showed: txn receipt status fail.
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.js
-node scripts/deploy.js
-npx eslint '**/*.js'
-npx eslint '**/*.js' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
+Code:
 ```
+  FundMe
+    1) allows people to fund and withdraw
 
-# Etherscan verification
+  0 passing (31s)
+  1 failing
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+  1) FundMe
+       allows people to fund and withdraw:
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+      AssertionError: expected '50000000000000000' to equal '0'
+      + expected - actual
 
-```shell
-hardhat run --network ropsten scripts/deploy.js
+      -50000000000000000
+      +0
 ```
+Solution:
+I noticed that the fund() function and the withdraw() function, on the etherscan, they are on the same block. So I think this is the problem that causes the failing. So I let both of the response wait for 1 block after calling the function from the contracts. Luckily it worked!
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+```
+  FundMe
+    ✓ allows people to fund and withdraw (29450566 gas)
 
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+
+  1 passing (11m)
+
+✨  Done in 638.57s.
 ```
