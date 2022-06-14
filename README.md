@@ -23,7 +23,7 @@ Code:
       +0
 ```
 Solution:
-I noticed that the fund() function and the withdraw() function, on the etherscan, they are on the same block. So I think this is the problem that causes the failing. So I let both of the response wait for 1 block after calling the function from the contracts. Luckily it worked!
+I noticed that the fund() function and the withdraw() function, on the etherscan, are on the same block. So I think this is the problem that causes the failing. So I let both of the responses wait for 1 block after calling the function from the contracts. Luckily it worked!
 
 ```
   FundMe
